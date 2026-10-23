@@ -34,7 +34,7 @@ public class GoldManager : MonoBehaviour
     {
         if(amount <= 0 || Gold < amount) 
         {
-            Debug.Log("Not enough gold to spend or invalid amount.");
+            GameLogger.Log("Not enough gold to spend or invalid amount.");
             return false;
         }
 
@@ -55,13 +55,13 @@ public class GoldManager : MonoBehaviour
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             AddGold(50);
-            Debug.Log("Added 50 gold. Current gold: " + Gold);
+            GameLogger.Log("Added 50 gold. Current gold: " + Gold);
         }
 
         if (Keyboard.current.tKey.wasPressedThisFrame)
         {
-            TrySpendGold(25);
-            Debug.Log("Tried to spend 25 gold. Current gold: " + Gold);
+            if(!TrySpendGold(25)) return;
+            GameLogger.Log("Tried to spend 25 gold. Current gold: " + Gold);
         }
     }
 }
