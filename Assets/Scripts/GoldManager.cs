@@ -1,0 +1,67 @@
+using UnityEngine;
+using System;
+using UnityEngine.InputSystem;
+using System.Collections.Generic;
+
+public class GoldManager : MonoBehaviour
+{
+    public static GoldManager Instance{ get; private set; }
+
+    public int Gold{ get; private set; }
+    public event Action<int> OnGoldChanged;
+
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+
+    public void AddGold(int amount)
+    {
+        if(amount <= 0) return;
+
+        Gold+=amount;
+        OnGoldChanged?.Invoke(Gold);
+    }
+
+    public bool TrySpendGold(int amount)
+    {
+        if(amount <= 0 || Gold < amount) 
+        {
+            Debug.Log("Not enough gold to spend or invalid amount.");
+            return false;
+        }
+
+        Gold-=amount;
+        OnGoldChanged?.Invoke(Gold);
+        return true;
+    }
+
+    private void Update()
+    {
+        KeyInput();
+    }
+
+    private void KeyInput()
+    {
+        if (Keyboard.current == null) return;
+
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            AddGold(50);
+            Debug.Log("Added 50 gold. Current gold: " + Gold);
+        }
+
+        if (Keyboard.current.tKey.wasPressedThisFrame)
+        {
+            TrySpendGold(25);
+            Debug.Log("Tried to spend 25 gold. Current gold: " + Gold);
+        }
+    }
+}
