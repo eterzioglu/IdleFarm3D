@@ -5,12 +5,11 @@ public class ClickInputHandler : MonoBehaviour
 {
     void Update()
     {
-       if (Mouse.current == null) { GameLogger.Log("Mouse.current null", LogLevel.Error); return; }
+       if (Mouse.current == null) return;
        if (!Mouse.current.leftButton.wasPressedThisFrame) return;
+
    
-       GameLogger.Log("1) Click detected");
-   
-       if (Camera.main == null) { GameLogger.Log("Camera.main null", LogLevel.Error); return; }
+       if (Camera.main == null) return;
    
        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
    
@@ -20,15 +19,14 @@ public class ClickInputHandler : MonoBehaviour
            return;
        }
    
-       GameLogger.Log($"2) Ray hit: {hit.collider.name}");
-   
-       if (hit.collider.TryGetComponent(out WorkTask task))
+       if (hit.collider.TryGetComponent(out Section section))
        {
-           GameLogger.Log($"3) WorkTask found, TryStart = {task.TryStart()}");
+           GameLogger.Log("2) Section clicked");
+           section.OnClick();
        }
        else
        {
-           GameLogger.Log("3) No WorkTask on hit object");
+           GameLogger.Log("2) No Section on hit object");
        }
     }
 }

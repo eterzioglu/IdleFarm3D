@@ -140,3 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eccc654adadf437198cfa011d58a592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Section
+  unlockCost: 100
+  isUnlockedByDefault: 0
+  lockedMaterial: {fileID: 2100000, guid: e2b9581d8b9cd468989180e90aef1061, type: 2}
+  unlockedMaterial: {fileID: 2100000, guid: b110c1419d120443c982611b9ea7c703, type: 2}

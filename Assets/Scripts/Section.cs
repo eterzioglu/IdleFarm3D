@@ -4,13 +4,31 @@ using System.Collections.Generic;
 
 public class Section : MonoBehaviour
 {
-    [SerializeField] private WorkTask workTaskPrefab;
     [SerializeField] private int unlockCost = 100;
+    [SerializeField] private bool isUnlockedByDefault = false;
     [SerializeField] private Material lockedMaterial;
     [SerializeField] private Material unlockedMaterial;
-    private bool isUnlocked = false;
 
-    event Action<Section> OnUnlocked;
+    public bool isUnlocked { get; private set; }
+    public event Action<Section> OnUnlocked;
+    public int UnlockCost => unlockCost;
+
+    private WorkTask workTask;
+    private Renderer sectionRenderer;
+
+    private void Awake()
+    {
+        isUnlocked = isUnlockedByDefault;
+        sectionRenderer = GetComponent<Renderer>();
+        workTask = GetComponent<WorkTask>();
+    }
+
+    private void Start()
+    {
+        isUnlocked = isUnlockedByDefault;
+        ApplyMaterial();
+    }
+
 
     private bool TryUnlock()
     {
@@ -19,9 +37,10 @@ public class Section : MonoBehaviour
         if (GoldManager.Instance.TrySpendGold(unlockCost))
         {
             isUnlocked = true;
-            GetComponent<Renderer>().material = unlockedMaterial;
+            ApplyMaterial();
             GameLogger.Log($"Section unlocked! Cost: {unlockCost} gold.", LogLevel.Info);
             OnUnlocked?.Invoke(this);
+            GameLogger.Log($"Section unlocked successfully. Current gold: {GoldManager.Instance.Gold}", LogLevel.Info);
             return true;
         }
         else
@@ -29,5 +48,39 @@ public class Section : MonoBehaviour
             GameLogger.Log("Not enough gold to unlock this section.", LogLevel.Warning);
         }
         return false;
+    }
+
+    public void OnClick()
+    {
+        if (!isUnlocked)
+        {
+            TryUnlock();
+        }
+        else
+        {
+            if (workTask != null)
+            {
+                if (!workTask.IsRunning)
+                {
+                    workTask.TryStart();
+                }
+                else
+                {
+                    GameLogger.Log("Task is already running.", LogLevel.Warning);
+                }
+            }
+            else
+            {
+                GameLogger.Log("No WorkTask component found on this section.", LogLevel.Warning);
+            }
+        }
+    }
+
+    private void ApplyMaterial()
+    {
+        if (sectionRenderer != null)
+        {
+            sectionRenderer.material = isUnlocked ? unlockedMaterial : lockedMaterial;
+        }
     }
 }
