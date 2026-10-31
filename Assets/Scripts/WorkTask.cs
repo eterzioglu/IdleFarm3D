@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class WorkTask : MonoBehaviour
 {
@@ -7,6 +8,10 @@ public class WorkTask : MonoBehaviour
 
     public bool IsRunning { get; private set; }
     public float Progress { get; private set; }
+
+    public event Action OnStarted;
+    public event Action<float> OnProgressChanged;
+    public event Action OnCompleted;
 
     float timer;
 
@@ -18,6 +23,7 @@ public class WorkTask : MonoBehaviour
         timer = 0f;
         Progress = 0f;
         TaskManager.Instance.Register(this);
+        OnStarted?.Invoke();
         GameLogger.Log($"Task started. Duration: {duration} seconds, Reward: {reward} gold.", LogLevel.Info);
         return true;
     }
@@ -26,9 +32,15 @@ public class WorkTask : MonoBehaviour
     {
         timer += deltaTime;
         Progress = Mathf.Clamp01(timer / duration);
+        OnProgressChanged?.Invoke(Progress);
 
         if (timer >= duration)
             Complete();
+    }
+
+    public float GetProgress()
+    {
+        return Progress;
     }
 
     void Complete()
@@ -42,6 +54,7 @@ public class WorkTask : MonoBehaviour
     {
         IsRunning = false;
         Progress = 0f;
+        OnCompleted?.Invoke();
         TaskManager.Instance.Unregister(this);
     }
 

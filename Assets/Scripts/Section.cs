@@ -9,7 +9,7 @@ public class Section : MonoBehaviour
     [SerializeField] private Material lockedMaterial;
     [SerializeField] private Material unlockedMaterial;
 
-    public bool isUnlocked { get; private set; }
+    public bool IsUnlocked { get; private set; }
     public event Action<Section> OnUnlocked;
     public int UnlockCost => unlockCost;
 
@@ -18,25 +18,25 @@ public class Section : MonoBehaviour
 
     private void Awake()
     {
-        isUnlocked = isUnlockedByDefault;
+        IsUnlocked = isUnlockedByDefault;
         sectionRenderer = GetComponent<Renderer>();
         workTask = GetComponent<WorkTask>();
     }
 
     private void Start()
     {
-        isUnlocked = isUnlockedByDefault;
+        IsUnlocked = isUnlockedByDefault;
         ApplyMaterial();
     }
 
 
     private bool TryUnlock()
     {
-        if (isUnlocked) return false;
+        if (IsUnlocked) return false;
 
         if (GoldManager.Instance.TrySpendGold(unlockCost))
         {
-            isUnlocked = true;
+            IsUnlocked = true;
             ApplyMaterial();
             GameLogger.Log($"Section unlocked! Cost: {unlockCost} gold.", LogLevel.Info);
             OnUnlocked?.Invoke(this);
@@ -52,7 +52,7 @@ public class Section : MonoBehaviour
 
     public void OnClick()
     {
-        if (!isUnlocked)
+        if (!IsUnlocked)
         {
             TryUnlock();
         }
@@ -80,7 +80,7 @@ public class Section : MonoBehaviour
     {
         if (sectionRenderer != null)
         {
-            sectionRenderer.material = isUnlocked ? unlockedMaterial : lockedMaterial;
+            sectionRenderer.material = IsUnlocked ? unlockedMaterial : lockedMaterial;
         }
     }
 }
