@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 public class Section : MonoBehaviour
 {
+    [SerializeField] private string sectionId = "0";
     [SerializeField] private int unlockCost = 100;
     [SerializeField] private bool isUnlockedByDefault = false;
     [SerializeField] private Material lockedMaterial;
     [SerializeField] private Material unlockedMaterial;
 
+    public string SectionId => sectionId;
     public bool IsUnlocked { get; private set; }
     public event Action<Section> OnUnlocked;
     public int UnlockCost => unlockCost;
@@ -21,11 +23,15 @@ public class Section : MonoBehaviour
         IsUnlocked = isUnlockedByDefault;
         sectionRenderer = GetComponent<Renderer>();
         workTask = GetComponent<WorkTask>();
+
+        if (SaveManager.Instance.HasSave && isUnlockedByDefault == false)
+            IsUnlocked = SaveManager.Instance.SaveData.unlockedSectionIDs.Contains(sectionId);
+        else
+            IsUnlocked = isUnlockedByDefault;
     }
 
     private void Start()
     {
-        IsUnlocked = isUnlockedByDefault;
         ApplyMaterial();
     }
 

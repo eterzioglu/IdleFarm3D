@@ -19,6 +19,7 @@ public class GoldManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
+        Gold = SaveManager.Instance.HasSave ? SaveManager.Instance.SaveData.gold : 0;
     }
 
 
@@ -62,6 +63,14 @@ public class GoldManager : MonoBehaviour
         {
             if(!TrySpendGold(25)) return;
             GameLogger.Log("Tried to spend 25 gold. Current gold: " + Gold);
+        }
+
+        if(Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            SaveManager.Instance.ResetSave();
+            Gold = 0;
+            OnGoldChanged?.Invoke(Gold);
+            GameLogger.Log("Reset save data. Current gold: " + Gold);
         }
     }
 }

@@ -569,6 +569,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 531479931090759902, guid: 191d3ce334449483f8b163c24d53b5ab, type: 3}
+      propertyPath: sectionId
+      value: section_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 531479931090759902, guid: 191d3ce334449483f8b163c24d53b5ab, type: 3}
       propertyPath: unlockCost
       value: 50
       objectReference: {fileID: 0}
@@ -1159,6 +1163,7 @@ GameObject:
   - component: {fileID: 1593451198}
   - component: {fileID: 1593451200}
   - component: {fileID: 1593451201}
+  - component: {fileID: 1593451202}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1217,6 +1222,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57038d79ef0764809b8c510227ab601a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickInputHandler
+--- !u!114 &1593451202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593451197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade66564601964cb6a4b8c33d38b7515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
 --- !u!1001 &2100336519
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1225,6 +1242,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 531479931090759902, guid: 191d3ce334449483f8b163c24d53b5ab, type: 3}
+      propertyPath: sectionId
+      value: section_3
+      objectReference: {fileID: 0}
     - target: {fileID: 531479931090759902, guid: 191d3ce334449483f8b163c24d53b5ab, type: 3}
       propertyPath: unlockCost
       value: 200
@@ -1298,6 +1319,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 531479931090759902, guid: 191d3ce334449483f8b163c24d53b5ab, type: 3}
+      propertyPath: sectionId
+      value: section_1
+      objectReference: {fileID: 0}
     - target: {fileID: 531479931090759902, guid: 191d3ce334449483f8b163c24d53b5ab, type: 3}
       propertyPath: unlockCost
       value: 0
