@@ -17,11 +17,6 @@ public class SaveManager : MonoBehaviour
         Load();
     }
 
-    private void Start()
-    {
-        GameLogger.Log($"SaveManager initialized. Save path: {SavePath}. Has save: {HasSave}. Current gold: {SaveData.gold}", LogLevel.Info);
-    }
-
     private void Load()
     {
         SaveData = new SaveData();

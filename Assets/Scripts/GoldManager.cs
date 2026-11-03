@@ -49,6 +49,8 @@ public class GoldManager : MonoBehaviour
         KeyInput();
     }
 
+
+#if UNITY_EDITOR
     private void KeyInput()
     {
         if (Keyboard.current == null) return;
@@ -73,4 +75,5 @@ public class GoldManager : MonoBehaviour
             GameLogger.Log("Reset save data. Current gold: " + Gold);
         }
     }
+#endif
 }
