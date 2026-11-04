@@ -22,6 +22,11 @@ public class GoldManager : MonoBehaviour
         Gold = SaveManager.Instance.HasSave ? SaveManager.Instance.SaveData.gold : 0;
     }
 
+    public void ResetGold()
+    {
+        Gold = 0;
+        OnGoldChanged?.Invoke(Gold);
+    }
 
     public void AddGold(int amount)
     {
@@ -70,9 +75,8 @@ public class GoldManager : MonoBehaviour
         if(Keyboard.current.rKey.wasPressedThisFrame)
         {
             SaveManager.Instance.ResetSave();
-            Gold = 0;
-            OnGoldChanged?.Invoke(Gold);
-            GameLogger.Log("Reset save data. Current gold: " + Gold);
+            ResetGold();
+            GameLogger.Log("Reset save and gold. Current gold: " + Gold);
         }
     }
 #endif

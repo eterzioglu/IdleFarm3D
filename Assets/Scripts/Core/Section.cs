@@ -36,7 +36,7 @@ public class Section : MonoBehaviour
     }
 
 
-    private bool TryUnlock()
+    public bool TryUnlock()
     {
         if (IsUnlocked) return false;
 
@@ -89,4 +89,36 @@ public class Section : MonoBehaviour
             sectionRenderer.material = IsUnlocked ? unlockedMaterial : lockedMaterial;
         }
     }
+
+    #if UNITY_EDITOR
+    public void SetIdForTesting(string id)
+    {
+        sectionId = id;
+    }
+
+    public void SetUnlockCostForTesting(int cost)
+    {
+        unlockCost = cost;
+    }
+
+    public bool TryUnlockForTesting(GoldManager goldManager)
+    {
+        if (IsUnlocked) return false;
+
+        if (goldManager.TrySpendGold(unlockCost))
+        {
+            IsUnlocked = true;
+            ApplyMaterial();
+            GameLogger.Log($"Section unlocked! Cost: {unlockCost} gold.", LogLevel.Info);
+            OnUnlocked?.Invoke(this);
+            GameLogger.Log($"Section unlocked successfully. Current gold: {goldManager.Gold}", LogLevel.Info);
+            return true;
+        }
+        else
+        {
+            GameLogger.Log("Not enough gold to unlock this section.", LogLevel.Warning);
+        }
+        return false;
+    }
+    #endif
 }
